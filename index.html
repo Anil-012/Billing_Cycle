@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ORDER'S</title>
+</head>
+
+<body>
+  <h1>Order-Calculator</h1>
+
+  <form id="billForm">
+    <label for="price">Price:</label>
+    <input type="number" id="price" required>
+
+    <label for="description">Description:</label>
+    <input type="text" id="description" ><br><br>
+
+    <label for="table">Table:</label>
+    <select id="table" name="table">
+      <option value="table1">Table 1</option>
+      <option value="table2">Table 2</option>
+      <option value="table3">Table 3</option>
+    </select><br><br>
+
+    <button type="button" id="calculateButton">Add Order</button>
+  </form>
+
+  <div id="billSummary">
+    <h2>Bill Summary</h2>
+    <p id="totalPrice">Total Price: 0.00</p>
+    <p id="descriptionAdded">Description: None</p>
+    <p id="tableChosen">Table Chosen: None</p>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.24.0/axios.min.js"></script>
+  <script>
+    const calculateButton = document.getElementById('calculateButton');
+    calculateButton.addEventListener('click', () => {
+      const price = parseFloat(document.getElementById('price').value);
+      const description = document.getElementById('description').value;
+      const table = document.getElementById('table').value;
+
+      document.getElementById('totalPrice').textContent = `Total Price: ${price.toFixed(2)}`;
+      document.getElementById('descriptionAdded').textContent = `Description: ${description || 'None'}`;
+      document.getElementById('tableChosen').textContent = `Table Chosen: ${table}`;
+
+      const data = {
+        price: price,
+        description: description,
+        table: table
+      };
+
+
+
+      axios.post('https://crudcrud.com/api/12af056bca9b4502bc71db9e793d41ef/changes', data)
+        .then(response => {
+          console.log('successfully Done:', response.data);
+        })
+        .catch(error => {
+          console.error('Error sending data:', error);
+        });
+    });
+  </script>
+</body>
+
+</html>
